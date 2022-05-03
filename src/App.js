@@ -1,25 +1,31 @@
-import logo from './logo.svg';
+import React from "react";
 import './App.css';
+import Tela from './components/Tela'
+import Tabela from "./components/Tabela";
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import api from './components/services/api'
+import {useEffect} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+function App (){
+  useEffect(() => {
+    Initi()
+  }, []);
+
+  async function Initi (){''
+    const resposta = await api.get('/posts')
+    console.log(resposta.data)
+  }
+  return(
+    <>
+    <BrowserRouter>
+      <Routes>
+        <Route path = "/tela" element={<Tela/>}/>
+        <Route path ="/tabela" element={<Tabela/>}/>
+      </Routes>
+    </BrowserRouter>
+   </>
+  )
 }
 
-export default App;
+export default App
