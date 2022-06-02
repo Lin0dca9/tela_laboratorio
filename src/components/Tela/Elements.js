@@ -32,7 +32,6 @@ export const BlocoUm = styled.div`
     width: 100%;
     height: 100%;
     max-width: 360px;
-    border-radius: 15px;
     margin-top:50px;
     background: #E3EAE2;
     display: block;

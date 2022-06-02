@@ -1,88 +1,69 @@
-import * as React from 'react';
-import {Table} from '@material-ui/core';
-import {TableBody} from '@material-ui/core';
-import {TableCell} from '@material-ui/core';
-import {TableContainer} from '@material-ui/core';
-import {TableHead} from '@material-ui/core';
-import {TableRow} from '@material-ui/core';
-import {Paper} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Table } from '@material-ui/core';
+import { TableBody } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
+import { TableContainer } from '@material-ui/core';
+import { TableHead } from '@material-ui/core';
+import { TableRow } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import api from '../services/api';
+import ControleHardware from '../Tela';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData('1', 159, 6.0, 24, 4.0),
-  createData('2', 237, 9.0, 37, 4.3),
-  createData('3', 262, 16.0, 24, 6.0),
-  createData('4', 305, 3.7, 67, 4.3),
-  createData('5', 356, 16.0, 49, 3.9),
-];
+
 
 export default function BasicTable() {
+  const [dados, setDados] = useState([])
+
+  useEffect(() => {
+    Tabela()
+
+  }, []);
+
+  async function Tabela() {
+    try {
+      const resposta = await api.get('https://sheetdb.io/api/v1/29x6x13au6zpf')
+      console.log(resposta)
+      setDados(resposta.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
-            <TableCell align="right">ID</TableCell>
-            <TableCell align="right">Monitor</TableCell>
-            <TableCell align="right">Teclado</TableCell>
-            <TableCell align="right">Mouse</TableCell>
-            <TableCell align="right">Observação</TableCell>
+            <TableCell align="center">ID</TableCell>
+            <TableCell align="center">Teclado</TableCell>
+            <TableCell align="center">Mouse</TableCell>
+            <TableCell align="center">Cabos</TableCell>
+            <TableCell align="center">Gabinete</TableCell>
+            <TableCell align="center">Observação</TableCell>
+            <TableCell align="center">laboratorio id</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0}}}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+        <TableHead >
+          {dados.map((element) => (
+            <TableRow key={element.id}>
+              <TableCell align="center">{element.id}</TableCell>
+              <TableCell align="center">{element.Teclado}</TableCell>
+              <TableCell align="center">{element.Mouse}</TableCell>
+              <TableCell align="center">{element.Cabos}</TableCell>
+              <TableCell align="center">{element.Gabinete}</TableCell>
+              <TableCell align="center">{element.Observacoes}</TableCell>
+              <TableCell align="center">{element.laboratorio_id}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
+          ))
+          }
+        </TableHead>
       </Table>
+
     </TableContainer>
   );
 }
 
-// import * as React from 'react';
-// import { styled } from '@mui/material/styles';
-// import {Table}from '@material-ui/core';
-// import {TableBody} from '@material-ui/core';
-// import {TableCell { tableCellClasses } from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Paper from '@mui/material/Paper';
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   '&:nth-of-type(odd)': {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   // hide last border
-//   '&:last-child td, &:last-child th': {
-//     border: 0,
-//   },
-// }));
-
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
